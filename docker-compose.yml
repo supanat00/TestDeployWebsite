@@ -1,0 +1,32 @@
+version: "3.1"
+
+volumes:
+  mariadb_data: {}
+
+services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      TZ: Asia/Bangkok
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: payment
+    ports:
+      - 3306:3306
+
+  adminer_mariadb:
+    image: adminer
+    container_name: adminer_mariadb
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+      ADMINER_DESIGN: nette
+    ports:
+      - 9080:8080
